@@ -1,11 +1,8 @@
-function [ finalRad, finalCenter ] = funcRANSAC(pt, p, ep, s)
+function [ finalRad, finalCenter,ptInlier ] = funcRANSAC(pt, p, ep, s)
 
-p = 0.99;
-ep = 0.7;
-s = 3;
 % calc number of iternation
 N = log(1-p) / log(1-(1-ep)^s);
-
+fprintf('number of iteration in RANSAC: %i\n',N);
 % sample data randomly
 % estimate parameters using sampled data
 % calculate error of Data
@@ -53,9 +50,15 @@ for iter = 1:N
         % keep the paramters as the final estimation
         finalRad = rad;
         finalCenter = [xCenter, yCenter];
+        
+        % save the inlier points
+        idxInlier = find(trueflaseMatrix == 1);
+        xinlier = pt(1,idxInlier);
+        yinlier = pt(2,idxInlier);
+        ptInlier = [xinlier; yinlier];
     end
 end
 
-fprintf('RANSAC number of inlier: %i\n', maxNumInlier);
+% fprintf('RANSAC number of inlier: %i\n', maxNumInlier);
 end
 

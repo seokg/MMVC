@@ -1,4 +1,4 @@
-function [finalRad, finalCenter  ] = funcExhaustSearch(pt, s )
+function [finalRad, finalCenter, ptInlier] = funcExhaustSearch(pt, s )
 %% Exhaust Search
 % input
 % pt: points
@@ -40,6 +40,12 @@ for idx = 1 : iter
         % keep the paramters as the final estimation
         finalRad  = rad;
         finalCenter  = [xCenter, yCenter];
+        
+        % save the inlier points
+        idxInlier = find(trueflaseMatrix == 1);
+        xinlier = pt(1,idxInlier);
+        yinlier = pt(2,idxInlier);
+        ptInlier = [xinlier; yinlier];
     end
     
     
