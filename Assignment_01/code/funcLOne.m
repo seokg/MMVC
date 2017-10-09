@@ -1,9 +1,11 @@
 function [output,error] = funcLOne(xdata, ydata)
     % Constrain
-    % |ax + b - y| =  |eps| = a
+    % |y - ax - b| = |eps| = a
     % a > eps,  a>-eps
-    % eps = ax = b - y
+    % esp - a < 0, -eps - a < 0  
     %
+    % eps = y - ax - b
+    % ax + b + eps = y 
     
     temp_a = ([diag(xdata); diag(-xdata)]);
     pos = diag(ones(length(xdata),1));
@@ -15,7 +17,8 @@ function [output,error] = funcLOne(xdata, ydata)
     aEq = [xdata one pos zeros(length(xdata),length(xdata))];
     bEq = ydata;
     
-    %objective function
+    % objective function
+    % [a b eps1 eps2 ... epsN a1 a2 ... aN]
     f = [0 0 zeros(1,length(xdata)) ones(1,length(xdata))];
 
     [output,error] = linprog(f,aIneq,bIneq,aEq,bEq);
