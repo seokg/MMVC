@@ -3,7 +3,9 @@ clear;
 close all;
 
 % reading image
-img = imread('ginger.png');
+% img = imread('ginger.png');
+img = imread('nupjuk.jpeg');
+img = imresize(permute(img,[2,1,3]),0.1);
 figure, subplot(2,2,1)
 imshow(img), title('original image')
 [row,col,~] = size(img);
