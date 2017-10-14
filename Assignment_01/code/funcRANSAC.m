@@ -1,8 +1,8 @@
-function [ finalRad, finalCenter,ptInlier ] = funcRANSAC(pt, p, ep, s)
-
+function [ finalRad, finalCenter, ptInlier, ptOutlier ] = funcRANSAC(pt, p, ep, s)
+% tic
 % calc number of iternation
 N = log(1-p) / log(1-(1-ep)^s);
-fprintf('number of iteration in RANSAC: %i\n',N);
+% fprintf('number of iteration in RANSAC: %i\n',N);
 % sample data randomly
 % estimate parameters using sampled data
 % calculate error of Data
@@ -15,6 +15,11 @@ fprintf('number of iteration in RANSAC: %i\n',N);
 rng('shuffle','twister');
 numPts = length(pt);
 maxNumInlier = 0;
+finalRad = 0;
+finalCenter = [0 0];
+ptInlier=[];
+ptOutlier=[];
+% disp(N)
 for iter = 1:N
     
     % sample data randomly
@@ -32,11 +37,13 @@ for iter = 1:N
     ma = (y2 - y1) / (x2 - x1);
     mb = (y3 - y2) / (x3 - x2);
     
-    xCenter = (ma* mb * (y1 - y3) + mb * (x1 + x2) - ma * ( x2 + x3)) / (2 * mb - ma);
+    xCenter = (ma* mb * (y1 - y3) + mb * (x1 + x2) - ma * ( x2 + x3)) / (2 * (mb - ma));
     yCenter = -1/ma * (xCenter - (x1 + x2) / 2) + (y1 + y2) / 2;
     
     rad = sqrt( (xCenter - x1).^2 + (yCenter - y1).^2 );
     
+%     disp(rad)
+%     fprintf('radius:%i\nxcenter:%i\nycenter%i\n', rad,xCenter,yCenter);
     % calculate error of Data
     trueflaseMatrix = (((pt(1,:) - xCenter).^2 + (pt(2,:) -yCenter).^2) > (rad - 0.1).^2) & ...
                       (((pt(1,:) - xCenter).^2 + (pt(2,:) -yCenter).^2) < (rad + 0.1).^2); 
@@ -56,9 +63,16 @@ for iter = 1:N
         xinlier = pt(1,idxInlier);
         yinlier = pt(2,idxInlier);
         ptInlier = [xinlier; yinlier];
+        
+        % save the inlier points
+        idxOutlier = find(trueflaseMatrix ~= 1);
+        xOutlier = pt(1,idxOutlier);
+        yOutlier = pt(2,idxOutlier);
+        ptOutlier = [xOutlier; yOutlier];
     end
 end
-
+% numInlier
 % fprintf('RANSAC number of inlier: %i\n', maxNumInlier);
+% toc
 end
 

@@ -5,6 +5,7 @@
 %
 clc;
 clear;
+close all;
 
 %% EXERCISE PART 1: RANSAC FOR CIRCLE FITTING
 
@@ -32,24 +33,33 @@ pt = [inlier, outlier];
 p = 0.99;
 ep = ratio005;
 s = 3;
-[ ransacRad, ransacCenter, ransacptInlier ] = funcRANSAC(pt, p, ep, s);
+disp('number of iteration')
+disp( log(1-p) / log(1-(1-ep)^s));
+disp('time to compute RANSAC')
+[ ransacRad, ransacCenter, ransacptInlier, ransacptOutlier ] = funcRANSAC(pt, p, ep, s);
+
 % Exhaust Search
+disp('time to compute Exhaust Search')
 [exhaustRad, exhaustCenter, exhaustInlier ] = funcExhaustSearch(pt, s);
 
 % generate histrogram
 histData = zeros(1,1000);
 maxNumInlier = 0;
+
 for i = 1:1000
-    [ Rad, Center, ransacptInlier ] = funcRANSAC(pt, p, ep, s);
-    numInlier = length(ransacptInlier);
+    [ Rad, Center, in,out ] = funcRANSAC(pt, p, ep, s);
+    numInlier = length(in);
     histData(i) = numInlier;
     if maxNumInlier < numInlier
         maxNumInlier = numInlier;
-        ransacRad = Rad;
-        ransacCenter = Center;
+%         ransacRad = Rad;
+%         ransacCenter = Center;
+%         ransacptInlier = in;
+%         ransacptOutlier = out;
     end
 
 end
+
 subplot(2,4,1);
 hist(histData,0:100)
 xlabel('Nb of detected inliers') % x-axis label
@@ -65,7 +75,7 @@ xtruth = rad * cos(theta) + center(1);
 ytruth = rad * sin(theta) + center(2);
 
 subplot(2,4,5);
-plot(inlier(1,:),inlier(2,:),'bo',outlier(1,:),outlier(2,:),'ro')
+plot(ransacptInlier(1,:),ransacptInlier(2,:),'bo',ransacptOutlier(1,:),ransacptOutlier(2,:),'ro')
 axis([-10 10 -10 10])
 
 hold on
@@ -84,20 +94,25 @@ pt = [inlier, outlier];
 p = 0.99;
 ep = ratio020;
 s = 3;
-[ ransacRad, ransacCenter, ransacptInlier ] = funcRANSAC(pt, p, ep, s);
+disp('number of iteration')
+disp( log(1-p) / log(1-(1-ep)^s));
+disp('time to compute RANSAC')
+[ ransacRad, ransacCenter, ransacptInlier, ransacptOutlier  ] = funcRANSAC(pt, p, ep, s);
 % Exhaust Search
+disp('time to compute Exhaust Search')
 [exhaustRad, exhaustCenter, exhaustInlier ] = funcExhaustSearch(pt, s);
-
 % generate histrogram
 maxNumInlier = 0;
 for i = 1:1000
-    [ Rad, Center, ransacptInlier ] = funcRANSAC(pt, p, ep, s);
-    numInlier = length(ransacptInlier);
+    [ Rad, Center, in,out ] = funcRANSAC(pt, p, ep, s);
+    numInlier = length(in);
     histData(i) = numInlier;
     if maxNumInlier < numInlier
         maxNumInlier = numInlier;
-        ransacRad = Rad;
-        ransacCenter = Center;
+%         ransacRad = Rad;
+%         ransacCenter = Center;
+%         ransacptInlier = in;
+%         ransacptOutlier = out;
     end
 
 end
@@ -116,7 +131,7 @@ xtruth = rad * cos(theta) + center(1);
 ytruth = rad * sin(theta) + center(2);
 
 subplot(2,4,6);
-plot(inlier(1,:),inlier(2,:),'bo',outlier(1,:),outlier(2,:),'ro')
+plot(ransacptInlier(1,:),ransacptInlier(2,:),'bo',ransacptOutlier(1,:),ransacptOutlier(2,:),'ro')
 axis([-10 10 -10 10])
 
 hold on
@@ -135,21 +150,26 @@ pt = [inlier, outlier];
 p = 0.99;
 ep = ratio030;
 s = 3;
-[ ransacRad, ransacCenter, ransacptInlier ] = funcRANSAC(pt, p, ep, s);
+disp('number of iteration')
+disp( log(1-p) / log(1-(1-ep)^s));
+disp('time to compute RANSAC')
+[ ransacRad, ransacCenter, ransacptInlier, ransacptOutlier ] = funcRANSAC(pt, p, ep, s);
 % Exhaust Search
+disp('time to compute Exhaust Search')
 [exhaustRad, exhaustCenter, exhaustInlier ] = funcExhaustSearch(pt, s);
-
 % generate histrogram
 histData = zeros(1,1000);
 maxNumInlier = 0;
 for i = 1:1000
-    [ Rad, Center, ransacptInlier ] = funcRANSAC(pt, p, ep, s);
-    numInlier = length(ransacptInlier);
+    [ Rad, Center, in,out ] = funcRANSAC(pt, p, ep, s);
+    numInlier = length(in);
     histData(i) = numInlier;
     if maxNumInlier < numInlier
         maxNumInlier = numInlier;
-        ransacRad = Rad;
-        ransacCenter = Center;
+%         ransacRad = Rad;
+%         ransacCenter = Center;
+%         ransacptInlier = in;
+%         ransacptOutlier = out;
     end
 
 end
@@ -168,7 +188,7 @@ xtruth = rad * cos(theta) + center(1);
 ytruth = rad * sin(theta) + center(2);
 
 subplot(2,4,7);
-plot(inlier(1,:),inlier(2,:),'bo',outlier(1,:),outlier(2,:),'ro')
+plot(ransacptInlier(1,:),ransacptInlier(2,:),'bo',ransacptOutlier(1,:),ransacptOutlier(2,:),'ro')
 axis([-10 10 -10 10])
 
 hold on
@@ -187,21 +207,26 @@ pt = [inlier, outlier];
 p = 0.99;
 ep = ratio070;
 s = 3;
-[ ransacRad, ransacCenter, ransacptInlier ] = funcRANSAC(pt, p, ep, s);
+disp('number of iteration')
+disp( log(1-p) / log(1-(1-ep)^s));
+disp('time to compute RANSAC')
+[ ransacRad, ransacCenter, ransacptInlier, ransacptOutlier ] = funcRANSAC(pt, p, ep, s);
 % Exhaust Search
+disp('time to compute Exhaust Search')
 [exhaustRad, exhaustCenter, exhaustInlier ] = funcExhaustSearch(pt, s);
-
 % generate histrogram
 histData = zeros(1,1000);
 maxNumInlier = 0;
 for i = 1:1000
-    [ Rad, Center, ransacptInlier ] = funcRANSAC(pt, p, ep, s);
-    numInlier = length(ransacptInlier);
+    [ Rad, Center, in,out ] = funcRANSAC(pt, p, ep, s);
+    numInlier = length(in);
     histData(i) = numInlier;
     if maxNumInlier < numInlier
         maxNumInlier = numInlier;
-        ransacRad = Rad;
-        ransacCenter = Center;
+%         ransacRad = Rad;
+%         ransacCenter = Center;
+%         ransacptInlier = in;
+%         ransacptOutlier = out;
     end
 
 end
@@ -220,7 +245,7 @@ xtruth = rad * cos(theta) + center(1);
 ytruth = rad * sin(theta) + center(2);
 
 subplot(2,4,8);
-plot(inlier(1,:),inlier(2,:),'bo',outlier(1,:),outlier(2,:),'ro')
+plot(ransacptInlier(1,:),ransacptInlier(2,:),'bo',ransacptOutlier(1,:),ransacptOutlier(2,:),'ro')
 axis([-10 10 -10 10])
 
 hold on
@@ -242,8 +267,8 @@ N = 100;
 ratio000 = 0.00;
 ratio010 = 0.10;
 
-slope = 0.5;
-b = 3;
+slope = 0.65;
+b = -1;
 
 %%
 [inlier,outlier] = genLineData(N, slope, b, ratio010);
@@ -260,51 +285,88 @@ axis([-10 10 -10 10])
 hold on
 plot(x,y,'g-');
 
+xinlier = inlier(1,:);
+yinlier = inlier(2,:);
+xoutlier = outlier(1,:);
+youtlier = outlier(2,:);
+
+xdata = [xinlier.';xoutlier.'];
+ydata = [yinlier.';youtlier.'];
+
+% IRLS
+d = 0.0001;
+tolerance = 0.1;
+winit = 1;
+iter=20;
+theta = funcIRLS(ydata, xdata, iter, winit, d, tolerance);
+
+
+% draw line
+y = theta(1) * x +theta(2);
+plot(x,y,'b-');
+
+
+% L infinity norm
+f = [0 0 1];
+[theta,error] = funcLInfinity(xdata, ydata, f);
+y = theta(1) * x +theta(2);
+plot(x,y,'r-');
+
+% L1 norm
+f = [0 0 1];
+[theta,error] = funcLOne(xdata, ydata);
+y = theta(1) * x +theta(2);
+plot(x,y,'k-');
+legend('data inlier','data outlier' , 'synth. model', 'IRLS L-1', 'LP L-infinity model', 'LP L-1 model','southoutside')
 %%
 
 [inlier,outlier] = genLineData(N, slope, b, ratio000);
 
+% draw line
+step = 20/ 1000;
+x= -10:step:10;
+y = slope * x + b;
+
 
 subplot(1,2,2);
-plot(inlier(1,:),inlier(2,:),'bo',outlier(1,:),outlier(2,:),'ro')
+plot(inlier(1,:),inlier(2,:),'bo')
+hold on
 axis([-10 10 -10 10])
-
-
-
-%% gradient descent
-x = -5:0.1:5;
-y = 3 * x.^2 + 5*x + 10;
-
-gamma = 0.3;
-xprev = 4;
-while true
-    yprev = 3 * xprev.^2 + 5*xprev + 10;
-    x_ = xprev - gamma * (6 * xprev + 5);
-    
-    y_ = 3 * x_.^2 + 5*x_ + 10;
-    if y_ > yprev
-       disp('breaking')
-       disp(yprev)
-       disp(xprev)
-        break 
-    end
-    
-    xprev = x_;
-    disp('iter')
-end
+plot(x,y,'g-');
 
 
 
 
-%%
+xinlier = inlier(1,:);
+yinlier = inlier(2,:);
+xoutlier = outlier(1,:);
+youtlier = outlier(2,:);
 
-for index = 1: 100
-    
-    
-    
-    w = 1 / abs(y - (sprev*x + bprev));
-    theta = 
-    
-end
+xdata = [xinlier.';xoutlier.'];
+ydata = [yinlier.';youtlier.'];
+
+% IRLS
+d = 0.0001;
+tolerance = 0.1;
+winit = 1;
+iter=20;
+theta = funcIRLS(ydata, xdata, iter, winit, d, tolerance);
 
 
+% draw line
+y = theta(1) * x +theta(2);
+plot(x,y,'b-');
+
+
+% L infinity norm
+f = [0 0 1];
+[theta,error] = funcLInfinity(xdata, ydata, f);
+y = theta(1) * x +theta(2);
+plot(x,y,'r-');
+
+% L1 norm
+f = [0 0 1];
+[theta,error] = funcLOne(xdata, ydata);
+y = theta(1) * x +theta(2);
+plot(x,y,'k-');
+legend('data inlier', 'synth. model', 'IRLS L-1', 'LP L-infinity model', 'LP L-1 model','southoutside')

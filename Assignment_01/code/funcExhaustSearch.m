@@ -3,12 +3,13 @@ function [finalRad, finalCenter, ptInlier] = funcExhaustSearch(pt, s )
 % input
 % pt: points
 % s: points needed to fit model
-
+tic
 len = length(pt);
 index = 1:1:len;
 combination = nchoosek(index, s);
 maxNumInlier = 0;
 iter = length(combination);
+disp(iter)
 for idx = 1 : iter
     xSelect = pt(1,combination(idx,:));
     ySelect = pt(2,combination(idx,:));
@@ -50,7 +51,8 @@ for idx = 1 : iter
     
     
 end
-
+toc
 fprintf('EXHAUST SEARCH number of inlier: %i\n', maxNumInlier);
+
 end
 
