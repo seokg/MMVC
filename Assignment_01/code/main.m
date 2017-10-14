@@ -268,3 +268,43 @@ plot(x,y,'g-');
 subplot(1,2,2);
 plot(inlier(1,:),inlier(2,:),'bo',outlier(1,:),outlier(2,:),'ro')
 axis([-10 10 -10 10])
+
+
+
+%% gradient descent
+x = -5:0.1:5;
+y = 3 * x.^2 + 5*x + 10;
+
+gamma = 0.3;
+xprev = 4;
+while true
+    yprev = 3 * xprev.^2 + 5*xprev + 10;
+    x_ = xprev - gamma * (6 * xprev + 5);
+    
+    y_ = 3 * x_.^2 + 5*x_ + 10;
+    if y_ > yprev
+       disp('breaking')
+       disp(yprev)
+       disp(xprev)
+        break 
+    end
+    
+    xprev = x_;
+    disp('iter')
+end
+
+
+
+
+%%
+
+for index = 1: 100
+    
+    
+    
+    w = 1 / abs(y - (sprev*x + bprev));
+    theta = 
+    
+end
+
+
