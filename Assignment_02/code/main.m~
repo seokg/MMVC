@@ -3,21 +3,42 @@ clear;
 close all;
 
 % reading image
-img = imread('ginger.png');
-img = imread('russel.jpg');
-% img = imread('nupjuk.jpeg');
-% img = imresize(permute(img,[2,1,3]),0.1);
-f=figure(); subplot(2,2,1)
+% img = imread('ginger.png');
+img = imread('nupjuk.jpeg');
+img = imresize(permute(img,[2,1,3]),0.1);
+f=figure(), subplot(2,2,1)
 imshow(img), title('original image')
 [row,col,~] = size(img);
 [X,Y]=meshgrid(1:col,1:row);
 
-numberControlPts = 7;
+
 
 % select the control points
 hold on
-controlpts = zeros(numberControlPts,2);
-for idx = 1: numberControlPts
+controlpts = [];
+numControlPts = 0;
+H = uicontrol('Style', 'PushButton', ...
+                    'String', 'Break',...
+                    'Callback', @returnTrue);
+while true
+    waitforbuttonpress;
+    key = get(f,'CurrentCharacter');
+    if (key == 'q')
+        display('End of cycle.')
+        break;
+    end
+
+    disp('iter')
+    [x,y] = ginput(1);
+    controlpts = [controlpts;[x,y]];
+    numControlPts= numControlPts + 1;
+    plot(x,y,'go');
+
+end
+
+hold on
+controlpts = zeros(7,2);
+for idx = 1:7
    [x,y] = ginput(1);
    controlpts(idx,:) = [x,y];
    plot(x,y,'go');
@@ -25,8 +46,8 @@ for idx = 1: numberControlPts
 end
 
 % select the target points
-targetpts = zeros(numberControlPts,2);
-for idx = 1:numberControlPts
+targetpts = zeros(7,2);
+for idx = 1:7
     [x,y] = ginput(1);
     targetpts(idx,:) = [x,y];
     plot(x,y,'rx')
@@ -66,6 +87,3 @@ imshow(rigimg),title('rigid deformation');
 hold on 
 plot(controlpts(:,1),controlpts(:,2),'go')
 plot(targetpts(:,1),targetpts(:,2),'rx')
-
-%%
-disp('deformation complete!!!')
